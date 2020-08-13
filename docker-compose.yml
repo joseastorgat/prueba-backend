@@ -1,0 +1,19 @@
+version: "3"
+services: 
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: library
+    volumes: 
+      - ./db/data:/var/lib/postgreql/data
+    ports:
+      - "5432:5432"
+  
+  server:
+    image: backend-test-server:latest
+    depends_on:
+      - db
+    ports:
+      - "4999:4999"
