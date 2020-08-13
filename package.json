@@ -1,0 +1,22 @@
+{
+  "name": "prueba-flamedev",
+  "version": "0.0.1",
+  "description": "Prueba flamedev backeend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseastorgat/prueba-flamedev.git"
+  },
+  "author": "José Astorga",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joseastorgat/prueba-flamedev/issues"
+  },
+  "homepage": "https://github.com/joseastorgat/prueba-flamedev#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
