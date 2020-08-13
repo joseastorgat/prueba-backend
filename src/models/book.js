@@ -23,13 +23,11 @@ const book = (sequelize, DataTypes, Model) => {
         modelName: "Book"
     });
 
-    Book.findById = async id => {
+    Book.findById = id => {
 
-        let book = await Book.findOne({
+        return  Book.findOne({
             where: {id: id},
         });
-
-        return book;
     }
    
     return Book;
