@@ -61,13 +61,14 @@ export function loginCallback(req, res){
 
     else {
         auth.getToken(req.query.code, (err, token) => {
-          console.log(err);
-          console.log(token);
+          
           if (err){
+            console.log(err);
+            console.log(token);
             return res.status(409).send({"error": "Error al procesar, porfavor intenta nuevamente"});
           }
           // Store the credentials given by google into a jsonwebtoken in a cookie called 'jwt'    
-          const jwttoken = jwt.sign(token, process.env.JWT_SECRET, {expiresIn: 30}) // expires in 30 minutes
+          const jwttoken = jwt.sign(token, process.env.JWT_SECRET, {expiresIn: 1800}) // expires in 1800 seconds
           return res.send({"token": jwttoken});
       });
     }
@@ -81,6 +82,7 @@ export function authMiddleware(req, res, next){
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
 
         if(err){
+          console.log(err);
           return res.status(409).send({"error": "Token inválido"});
         }else{
           req.decoded = decoded; 
