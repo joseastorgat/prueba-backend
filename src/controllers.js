@@ -1,9 +1,5 @@
 import models from './models/index.js';
 
-export const helloWorld =  (req, res) => {
-    res.send('Hello World');
-};
-  
 
 export const getAllBooks =  (req, res) => {
     models.Book.findAll()
@@ -13,22 +9,27 @@ export const getAllBooks =  (req, res) => {
 
 export const getBookById = (req, res) => {
     models.Book.findById(parseInt(req.params.id))
-    .then(libro=> res.send( libro))
+    .then(libro=> 
+        {
+            if(libro === null){
+                res.status(404).send({"msg": "No existe ese libro"});
+            }
+            else{
+                res.send(libro);
+            }
+        })
     .catch(e => console.error(e));
 };
 
 export const createBook = (req, res) => {
     const { name } = req.body;
 
-    console.log(req.body);
-    console.log(`nombre del libro a crear ${name}`)
-
     models.Book.create({name: name})
         .then( book => {
             res.send(book);
         })
         .catch( e => 
-            res.send("No se pudo crear")
+            res.send({"msg": "No se pudo crear"})
         );
 };
 
@@ -40,12 +41,18 @@ export const updateBook = (req, res) => {
     models.Book.update( {name: name}, {
         where: {
             id: req.params.id
-        }
+        },
+        returning: true
     })
-    .then( book => {
-        res.send(book);
+    .then( (book) => {
+        console.log(`update ${book}`);
+        if(book[0] === 0 ){
+            res.status(404).send({"msg": "Libro no existe"})
+        }else{
+            res.send(book[1][0]);
+        }
     }).catch( e =>
-        res.send("No se pudo actualizar")
+        res.status(409).send({"msg": "No se pudo actualizar"})
     );};
 
 
@@ -54,12 +61,20 @@ export const deleteBook = (req, res) => {
     models.Book.destroy({
         where: {
             id: req.params.id
-        }
+        },
+        returning: true
     })
     .then( book => {
-        res.send(book);
-    }).catch( e => 
-        res.send("No se pudo eliminar")
-    );
+        console.log(`delete ${book}`);
+        if(book === 0 ){
+            res.status(404).send({"msg": "Libro no existe"})
+        }else{
+            res.send({"msg": "Libro eliminado correctamente", "id": req.params.id});
+        }
+    })
+    .catch( e => { 
+        res.status(404).send({"msg": "No se pudo eliminar"});
+        console.log(e);
+    });
 };
 
