@@ -2,8 +2,10 @@
 import  Router from 'express';
 const router = Router();
 
-import { helloWorld, getAllBooks, getBookById, createBook, updateBook, deleteBook } from './controllers.js';
+import { authMiddleware } from './auth/google-auth.js'
 
+import { helloWorld, getAllBooks, getBookById, createBook, updateBook, deleteBook } from './controllers.js';
+router.use(authMiddleware);
 router.get('/', helloWorld);
 router.get('/allBooks/', getAllBooks);
 router.get('/get/book/:id', getBookById);
