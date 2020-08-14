@@ -5,20 +5,18 @@ import express from 'express';
 import models, {sequelize} from './models/index.js';
 
 import router from './routes.js';
-
-const PORT = 4999;
-const HOST = '0.0.0.0';
+import authRouter from './auth/routes.js';
 
 const app = express();
 
 app.use(express.json());
+app.use('/', authRouter);
 app.use('/', router);
-
 
 const connectDb = async (retries = 5) => {
   sequelize.sync().then( () => {
     app.listen(PORT, HOST);
-    console.log(`Running on http://${HOST}:${PORT}`);
+    console.log(`Running on http://${process.env.HOST}:${process.env.PORT}`);
   }).catch( () => {
     
     if(retries === 0){
