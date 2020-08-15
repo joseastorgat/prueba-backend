@@ -2,4 +2,6 @@ node_modules/
 prueba.code-workspace
 *.pdf
 
-.env
+*.env
+
+*secret*

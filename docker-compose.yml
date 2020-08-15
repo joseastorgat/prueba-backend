@@ -2,17 +2,15 @@ version: "3"
 services: 
   db:
     image: postgres
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: library
+    env_file:
+      - ./db.env
     volumes: 
       - ./db/data:/var/lib/postgreql/data
     ports:
       - "5432:5432"
   
   server:
-    image: backend-test-server:latest
+    image: astorgato/prueba-backend:latest
     env_file:
       - ./app.env
     depends_on:
